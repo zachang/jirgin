@@ -29,6 +29,7 @@ class UserListViewSet(mixins.ListModelMixin,
     serializer_class = UserSerializer
 
 class UserDetailViewSet(mixins.UpdateModelMixin,
+                        mixins.RetrieveModelMixin,
                         viewsets.GenericViewSet):
     """
     API viewset that allows users to retrieve, update and delete their own data
