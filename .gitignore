@@ -4,6 +4,3 @@ jirgin-venv/
 bookings/authentication/__pycache__/
 bookings/authentication/migrations/__pycache__/
 bookings/bookings/__pycache__/
-__pycache__/
-*.pyc
-.DS_Store
