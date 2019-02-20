@@ -1,6 +1,3 @@
 jirgin-venv/
 .vscode/
 .env
-bookings/authentication/__pycache__/
-bookings/authentication/migrations/__pycache__/
-bookings/bookings/__pycache__/
