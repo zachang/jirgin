@@ -10,7 +10,7 @@ class IsOwnerOrReadOnly(BasePermission):
         # Read permissions are allowed to any request,
         # so we'll always allow GET, HEAD or OPTIONS requests.
         if request.method in SAFE_METHODS:
-            return True
+            return obj.id == request.user.id
 
         # Write permissions are only allowed to the owner of the data.
         return obj.id == request.user.id
