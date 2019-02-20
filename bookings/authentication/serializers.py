@@ -19,8 +19,10 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'first_name', 'last_name','username', 'password', 'email')
         extra_kwargs = {
-            'password': {'write_only': True, 'min_length': 6},
-            'username': {'min_length': 2},
+            'password': {'write_only': True, 'min_length': 6, 'max_length': 20},
+            'username': {'min_length': 2, 'max_length': 30},
+            'first_name': {'min_length': 2, 'max_length': 100},
+            'last_name': {'min_length': 2, 'max_length': 100}
         }
 
     def create(self, validated_data):
@@ -31,5 +33,29 @@ class UserSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
         )
         user.set_password(validated_data['password'])
+        user.save()    
+        return user
+
+class UserModifySerializer(serializers.ModelSerializer):
+    """A serializer for Admin profile object with jwt rendered"""
+    email = serializers.EmailField()
+
+    class Meta:
+        model = User
+        fields = ('id', 'first_name', 'last_name','username', 'email')
+        extra_kwargs = {
+            'username': {'required': False, 'min_length': 2, 'max_length': 30},
+            'first_name': {'required': False, 'min_length': 2, 'max_length': 100},
+            'last_name': {'required': False,'min_length': 2, 'max_length': 100},
+            'email': {'required': False}
+        }
+
+    def create(self, validated_data):
+        user = User(
+            first_name=validated_data['first_name'],
+            last_name=validated_data['last_name'],
+            username=validated_data['username'],
+            email=validated_data['email'],
+        )
         user.save()    
         return user
