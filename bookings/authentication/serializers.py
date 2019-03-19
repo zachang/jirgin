@@ -1,8 +1,9 @@
-import re
+# import re
 from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
 from django.contrib.auth.models import User
 from .models import UserProfile
+from .helpers import password_validate
 
 class UserProfileSerializer(serializers.ModelSerializer):
 
@@ -16,13 +17,8 @@ class UserSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         password = data.get('password', None)
-        if re.match(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$',
-            password):
+        if password_validate(password):
             return data
-        raise serializers.ValidationError({
-            'password': 'Password must be at least 8 characters long, alphanumeric and contain' + 
-            ' special characters.'
-        })
 
     class Meta:
         model = User
