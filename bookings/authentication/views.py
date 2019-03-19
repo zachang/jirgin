@@ -1,16 +1,20 @@
 from django.contrib.admin.utils import lookup_field
+from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.models import User
 from django.shortcuts import render
 from rest_framework import viewsets
+from rest_framework.decorators import action
 from rest_framework import mixins
 from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import (HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST,
                                    HTTP_404_NOT_FOUND)
+from rest_framework.parsers import JSONParser
 
 from .permissions import IsOwnerOrReadOnly
-from .serializers import UserSerializer, UserModifySerializer
+from .serializers import UserSerializer, UserModifySerializer, ChangePasswordSerializer
+from .helpers import decode_token, password_validate
 
 
 @api_view(['GET'])
@@ -39,3 +43,44 @@ class UserDetailViewSet(mixins.UpdateModelMixin,
     serializer_class = UserModifySerializer
 
     lookup_field = 'pk'
+
+    @action(detail=False, methods=['PATCH'], permission_classes=[IsAuthenticated])
+    def change_password(self, request, pk=None):
+        
+        user_id = decode_token(request.auth)['user_id']
+        user = User.objects.get(pk=user_id)
+        data = JSONParser().parse(request)
+        serializer = ChangePasswordSerializer(data=data)
+
+        if serializer.is_valid():
+
+            old_pass = serializer.data['old_pass']
+            new_pass = serializer.data['new_pass']
+            confirm_new_pass = serializer.data['confirm_new_pass']
+
+            if old_pass == new_pass:
+                return Response({
+                    'message': 'Old and new password cannot be the same',
+                    'status': HTTP_400_BAD_REQUEST
+                })
+
+            if new_pass != confirm_new_pass:
+                return Response({
+                    'message': 'New and cofirm password should be the same',
+                    'status': HTTP_400_BAD_REQUEST
+                })
+
+            if check_password(old_pass, user.password):
+                if password_validate(new_pass):
+                    user.password = make_password(new_pass)
+                    user.save()
+                    return Response({
+                        'message': 'Password changed successfully',
+                        'status': HTTP_200_OK
+                    })
+            else:
+                return Response({
+                    'message': 'Old Password is not correct',
+                    'status': HTTP_400_BAD_REQUEST
+                })
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)

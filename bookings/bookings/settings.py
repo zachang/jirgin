@@ -66,7 +66,7 @@ REST_FRAMEWORK = {
 }
 
 JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=365),
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=30),
     'JWT_ALLOW_REFRESH': True,
     'JWT_SECRET_KEY': SECRET_KEY,
     'JWT_DECODE_HANDLER': 'rest_framework_jwt.utils.jwt_decode_handler',
