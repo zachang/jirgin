@@ -1,8 +1,8 @@
+import re
 from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
 from django.contrib.auth.models import User
 from .models import UserProfile
-
 
 class UserProfileSerializer(serializers.ModelSerializer):
 
@@ -13,17 +13,32 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     """A serializer for Admin profile object with jwt rendered"""
-    email = serializers.EmailField()
+
+    def validate(self, data):
+        password = data.get('password', None)
+        if re.match(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$',
+            password):
+            return data
+        raise serializers.ValidationError({
+            'password': 'Password must be at least 8 characters long, alphanumeric and contain' + 
+            ' special characters.'
+        })
 
     class Meta:
         model = User
         fields = ('id', 'first_name', 'last_name','username', 'password', 'email')
         extra_kwargs = {
-            'password': {'write_only': True, 'min_length': 6, 'max_length': 20},
-            'username': {'min_length': 2, 'max_length': 30},
-            'first_name': {'min_length': 2, 'max_length': 100},
-            'last_name': {'min_length': 2, 'max_length': 100}
+            'username': {
+                'min_length': 2, 'max_length': 30, 'allow_blank': False, 'required': True
+                },
+            'first_name': {
+                'min_length': 2, 'max_length': 100, 'allow_blank': False, 'required': True
+                },
+            'last_name': {
+                'min_length': 2, 'max_length': 100, 'allow_blank': False, 'required': True
+                }
         }
+
 
     def create(self, validated_data):
         user = User(
@@ -66,3 +81,14 @@ class UserModifySerializer(serializers.ModelSerializer):
         instance.email = validated_data.get('email', instance.email)
         instance.save()
         return instance
+
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    """A serializer for password change"""
+    
+    old_pass = serializers.CharField(required=True)
+    new_pass = serializers.CharField(required=True)
+    confirm_new_pass = serializers.CharField(required=True)
+    class Meta:
+        fields = ('new_pass', 'confirm_new_pass', 'old_pass')
