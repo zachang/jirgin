@@ -60,27 +60,23 @@ class UserDetailViewSet(mixins.UpdateModelMixin,
 
             if old_pass == new_pass:
                 return Response({
-                    'message': 'Old and new password cannot be the same',
-                    'status': HTTP_400_BAD_REQUEST
-                })
+                    'message': 'Old and new password cannot be the same'
+                }, status=HTTP_400_BAD_REQUEST)
 
             if new_pass != confirm_new_pass:
                 return Response({
-                    'message': 'New and cofirm password should be the same',
-                    'status': HTTP_400_BAD_REQUEST
-                })
+                    'message': 'New and cofirm password should be the same'
+                }, status=HTTP_400_BAD_REQUEST)
 
             if check_password(old_pass, user.password):
                 if password_validate(new_pass):
                     user.password = make_password(new_pass)
                     user.save()
                     return Response({
-                        'message': 'Password changed successfully',
-                        'status': HTTP_200_OK
-                    })
+                        'message': 'Password changed successfully'
+                    }, status=HTTP_200_OK)
             else:
                 return Response({
-                    'message': 'Old Password is not correct',
-                    'status': HTTP_400_BAD_REQUEST
-                })
+                    'message': 'Old Password is not correct'
+                }, status=HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
