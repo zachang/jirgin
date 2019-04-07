@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'authentication.apps.AuthenticationConfig',
+    'flight.apps.FlightConfig',
+    'book.apps.BookConfig',
     'rest_framework',
     'rest_framework.authtoken'
 ]

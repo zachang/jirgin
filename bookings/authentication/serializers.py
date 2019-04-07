@@ -1,11 +1,10 @@
-# import re
 from rest_framework import serializers
-from rest_framework_jwt.settings import api_settings
 from django.contrib.auth.models import User
 from .models import UserProfile
 from .helpers import password_validate
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    """A serializer for user profile object"""
 
     class Meta:
         model = UserProfile
@@ -13,7 +12,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    """A serializer for Admin profile object with jwt rendered"""
+    """A serializer for user object"""
 
     def validate(self, data):
         password = data.get('password', None)
@@ -48,7 +47,7 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 class UserModifySerializer(serializers.ModelSerializer):
-    """A serializer for Admin profile object with jwt rendered"""
+    """A serializer for updates on user object"""
     email = serializers.EmailField()
 
     class Meta:
