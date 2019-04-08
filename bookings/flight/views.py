@@ -1,6 +1,9 @@
+import re
+
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from datetime import datetime, timezone
+from django.db import connection
 from rest_framework import mixins
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
@@ -65,3 +68,27 @@ class FlightListViewSet(mixins.ListModelMixin,
                 'status': 'Success',
                  'messages': serializer.errors 
             }, status=HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['GET'], permission_classes=[IsAdminUser])
+    def reservations(self, request):
+        date = request.query_params.get('date', None)
+        if date is None:
+            return Response({
+                'message': 'please provide a date in the query param.'
+                }, status=HTTP_400_BAD_REQUEST)
+
+        if not re.match(r'(^([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))$)', date):
+            return Response(
+                {'message': 'Date has wrong format. Use this format YYYY-MM-DD.'},
+                status=HTTP_400_BAD_REQUEST)
+
+        with connection.cursor() as cursor:
+            query = "SELECT number_booked FROM flight_flight WHERE Date(departure)=%s"
+            cursor.execute(query,[date])
+            count_result = cursor.fetchall()
+        if count_result:
+            for item in count_result[0]:
+                result = item
+            return Response({ 'reservations': result }, status=HTTP_200_OK)
+        return Response({ 'message': 'this departure date is invalid ' },
+            status=HTTP_400_BAD_REQUEST)
