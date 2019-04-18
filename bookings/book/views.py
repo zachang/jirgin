@@ -12,6 +12,8 @@ from django.shortcuts import get_object_or_404
 from flight.models import Flight
 from .models import Book
 from .serializers import BookSerializer
+from book.helpers.background_task import BackgroundTaskWorker
+from book.helpers.flight_reservation_email import send_flight_reservation_email
 
 
 
@@ -33,8 +35,10 @@ class BookListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
                     flight.number_booked += 1
                     serializer.save(user=self.request.user)
                     flight.save()
+                    BackgroundTaskWorker.start_work(send_flight_reservation_email,
+                        (self.request.user, flight.id, flight.departure))
                     return Response({
-                        'status': 'Success', 'flights': serializer.data
+                        'status': 'Success', 'booked_flights': serializer.data
                     }, status=HTTP_200_OK)
                 return Response({
                     'status': 'Failure', 'message': 'Flight is fully booked or not available'

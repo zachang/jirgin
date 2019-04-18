@@ -154,7 +154,7 @@ STATIC_URL = '/static/'
 
 # Cron Job settings
 CRONJOBS = [
-    ('58 23 * * *', 'book.email_reminder_cron.send_flight_reminder_mail')
+    ('58 23 * * *', 'book.helpers.email_reminder_cron.send_flight_reminder_mail')
 ]
 
 CRONTAB_COMMAND_SUFFIX = '2>&1'
