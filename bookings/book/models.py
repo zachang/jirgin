@@ -17,4 +17,3 @@ class Book(models.Model):
 
     def __str__(self):  
         return "{} class".format(self.flight_class,)
-        ç
