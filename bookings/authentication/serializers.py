@@ -87,3 +87,10 @@ class ChangePasswordSerializer(serializers.Serializer):
     confirm_new_pass = serializers.CharField(required=True)
     class Meta:
         fields = ('new_pass', 'confirm_new_pass', 'old_pass')
+
+class ImageSerializer(serializers.ModelSerializer):
+    """A serializer for user profile object"""
+    image = serializers.ImageField(max_length=None, allow_empty_file=False)
+    class Meta:
+        model = UserProfile
+        fields = ('id', 'image')
