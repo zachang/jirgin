@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 import datetime
 import cloudinary
+import django_heroku 
 from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -26,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [os.getenv('HOST'), '127.0.0.1']
 
@@ -51,6 +52,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -153,6 +155,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'  # or any prefix
 
@@ -181,3 +184,5 @@ cloudinary.config(
 CLOUDINARY = {
     'max_length': 200,
 }
+
+django_heroku.settings(locals())
