@@ -11,10 +11,13 @@ from rest_framework.response import Response
 from rest_framework.status import (HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST,
                                    HTTP_404_NOT_FOUND)
 from rest_framework.parsers import JSONParser
+from cloudinary.uploader import upload
 
 from .permissions import IsOwnerOrReadOnly
-from .serializers import UserSerializer, UserModifySerializer, ChangePasswordSerializer
+from .serializers import (UserSerializer, UserModifySerializer,
+    ChangePasswordSerializer, ImageSerializer)
 from .helpers import decode_token, password_validate
+from .models import UserProfile
 
 
 @api_view(['GET'])
@@ -79,4 +82,18 @@ class UserDetailViewSet(mixins.UpdateModelMixin,
                 return Response({
                     'message': 'Old Password is not correct'
                 }, status=HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['PATCH'], permission_classes=[IsAuthenticated])
+    def upload_image(self, request, pk=None):
+        
+        user_id = decode_token(request.auth)['user_id']
+        user = UserProfile.objects.get(pk=user_id)
+        serializer = ImageSerializer(data=request.data)
+
+        if serializer.is_valid():
+            uploaded_image = upload(request.data['image'])
+            user.image = uploaded_image['secure_url']
+            user.save()
+            return Response({'image': uploaded_image['secure_url']}, status=HTTP_200_OK)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)

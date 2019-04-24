@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 import datetime
+import cloudinary
 from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django_crontab',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -66,6 +68,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
+    'UPLOADED_FILES_USE_URL': True
 }
 
 JWT_AUTH = {
@@ -151,6 +154,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'  # or any prefix
 
 # Cron Job settings
 CRONJOBS = [
@@ -166,3 +170,14 @@ EMAIL_HOST_USER = os.environ.get('DEFAULT_EMAIL_ADDRESS')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL')
 EMAIL_PORT = os.environ.get('EMAIL_PORT')
+
+# Cloudinary Config
+cloudinary.config(
+    cloud_name = os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    api_key = os.environ.get('CLOUDINARY_API_KEY'),
+    api_secret = os.environ.get('CLOUDINARY_API_SECRET')
+)
+
+CLOUDINARY = {
+    'max_length': 200,
+}
