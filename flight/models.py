@@ -2,7 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
-class Flight(models.Model):  
+
+class Flight(models.Model):
     """Represents Flight model class"""
 
     departure = models.DateTimeField()
@@ -14,7 +15,7 @@ class Flight(models.Model):
     is_available = models.BooleanField(default=True)
 
     class Meta:
-        unique_together = (('departure', 'fly_from'),)
+        unique_together = (("departure", "fly_from"),)
 
-    def __str__(self):  
+    def __str__(self):
         return "The availability of this flight is {}".format(self.is_available)

@@ -6,14 +6,14 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('authentication', '0003_auto_20190421_0115'),
-    ]
+    dependencies = [("authentication", "0003_auto_20190421_0115")]
 
     operations = [
         migrations.AlterField(
-            model_name='userprofile',
-            name='image',
-            field=cloudinary.models.CloudinaryField(default='', max_length=255, verbose_name='image'),
-        ),
+            model_name="userprofile",
+            name="image",
+            field=cloudinary.models.CloudinaryField(
+                default="", max_length=255, verbose_name="image"
+            ),
+        )
     ]

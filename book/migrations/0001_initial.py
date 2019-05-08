@@ -11,21 +11,49 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('flight', '0001_initial'),
+        ("flight", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Book',
+            name="Book",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('flight_class', models.CharField(choices=[('BUSINESS', 'B'), ('ECONOMY', 'E'), ('FIRST', 'F')], default='ECONOMY', max_length=8)),
-                ('flight', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='book', to='flight.Flight')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='book', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "flight_class",
+                    models.CharField(
+                        choices=[("BUSINESS", "B"), ("ECONOMY", "E"), ("FIRST", "F")],
+                        default="ECONOMY",
+                        max_length=8,
+                    ),
+                ),
+                (
+                    "flight",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="book",
+                        to="flight.Flight",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="book",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.AlterUniqueTogether(
-            name='book',
-            unique_together={('user', 'flight')},
+            name="book", unique_together={("user", "flight")}
         ),
     ]

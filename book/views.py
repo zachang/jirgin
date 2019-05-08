@@ -16,7 +16,6 @@ from book.helpers.background_task import BackgroundTaskWorker
 from book.helpers.flight_reservation_email import send_flight_reservation_email
 
 
-
 class BookListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     """
     API viewset that allows users book flight
@@ -29,23 +28,33 @@ class BookListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
 
         if serializer.is_valid():
             try:
-                flight_id = serializer.validated_data['flight_id']
+                flight_id = serializer.validated_data["flight_id"]
                 flight = get_object_or_404(Flight, pk=flight_id)
                 if flight and flight.is_available:
                     flight.number_booked += 1
                     serializer.save(user=self.request.user)
                     flight.save()
-                    BackgroundTaskWorker.start_work(send_flight_reservation_email,
-                        (self.request.user, flight.id, flight.departure))
-                    return Response({
-                        'status': 'Success', 'booked_flights': serializer.data
-                    }, status=HTTP_200_OK)
-                return Response({
-                    'status': 'Failure', 'message': 'Flight is fully booked or not available'
-                }, status=HTTP_400_BAD_REQUEST)
+                    BackgroundTaskWorker.start_work(
+                        send_flight_reservation_email,
+                        (self.request.user, flight.id, flight.departure),
+                    )
+                    return Response(
+                        {"status": "Success", "booked_flights": serializer.data},
+                        status=HTTP_200_OK,
+                    )
+                return Response(
+                    {
+                        "status": "Failure",
+                        "message": "Flight is fully booked or not available",
+                    },
+                    status=HTTP_400_BAD_REQUEST,
+                )
             except IntegrityError:
-                return Response({
-                    'status': 'Failure',
-                    'message': 'You cannot book the same flight again'
-                    }, status=HTTP_409_CONFLICT)
-        return Response({ 'messages': serializer.errors }, status=HTTP_400_BAD_REQUEST)
+                return Response(
+                    {
+                        "status": "Failure",
+                        "message": "You cannot book the same flight again",
+                    },
+                    status=HTTP_409_CONFLICT,
+                )
+        return Response({"messages": serializer.errors}, status=HTTP_400_BAD_REQUEST)
