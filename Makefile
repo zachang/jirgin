@@ -1,3 +1,5 @@
+PYTHON_MANAGE = python manage.py 
+
 black:
 	black ../bookings/
 
@@ -5,7 +7,10 @@ pre-commit:
 	pre-commit install
 
 migrations:
-	python manage.py makemigrations
+	$(PYTHON_MANAGE) makemigrations
 
 migrate:
-	python manage.py migrate
+	$(PYTHON_MANAGE) migrate
+
+pip-install:
+	pip install -r requirements.txt
