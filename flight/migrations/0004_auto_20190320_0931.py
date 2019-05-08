@@ -5,24 +5,20 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('flight', '0003_auto_20190319_2330'),
-    ]
+    dependencies = [("flight", "0003_auto_20190319_2330")]
 
     operations = [
         migrations.AddField(
-            model_name='flight',
-            name='capacity',
-            field=models.IntegerField(default=0),
+            model_name="flight", name="capacity", field=models.IntegerField(default=0)
         ),
         migrations.AddField(
-            model_name='flight',
-            name='is_available',
+            model_name="flight",
+            name="is_available",
             field=models.BooleanField(default=True),
         ),
         migrations.AddField(
-            model_name='flight',
-            name='number_booked',
+            model_name="flight",
+            name="number_booked",
             field=models.IntegerField(default=0, null=True),
         ),
     ]

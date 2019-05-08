@@ -5,14 +5,10 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('flight', '0005_auto_20190320_1148'),
-    ]
+    dependencies = [("flight", "0005_auto_20190320_1148")]
 
     operations = [
         migrations.AlterField(
-            model_name='flight',
-            name='departure',
-            field=models.DateTimeField(),
-        ),
+            model_name="flight", name="departure", field=models.DateTimeField()
+        )
     ]

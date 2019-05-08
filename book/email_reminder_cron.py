@@ -6,14 +6,14 @@ from bookings.settings import EMAIL_HOST_USER
 
 
 def send_flight_reminder_mail():
-    date_format = '%Y-%m-%d %H:%M:%S'
+    date_format = "%Y-%m-%d %H:%M:%S"
     next_day = datetime.now().day + 1
     month = datetime.now().month
     year = datetime.now().year
-    bookings =  Book.objects.select_related('user', 'flight').filter(
+    bookings = Book.objects.select_related("user", "flight").filter(
         flight__departure__day=next_day,
         flight__departure__month=month,
-        flight__departure__year=year
+        flight__departure__year=year,
     )
 
     email_list = []
@@ -26,8 +26,10 @@ def send_flight_reminder_mail():
         (element,) = departure_datetime
         message = EmailMessage(
             "Flight reminder",
-            'Hello, this is a reminder that your flight is scheduled for {}'.format(element),
+            "Hello, this is a reminder that your flight is scheduled for {}".format(
+                element
+            ),
             EMAIL_HOST_USER,
-            to=email_list
-        ) 
+            to=email_list,
+        )
         message.send()

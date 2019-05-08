@@ -4,11 +4,8 @@ from rest_framework_jwt.views import obtain_jwt_token
 from .views import UserListViewSet, UserDetailViewSet
 
 router = routers.DefaultRouter()
-router.register(r'^users', UserListViewSet, basename='users')
-router.register(r'^user', UserDetailViewSet, basename='user')
+router.register(r"^users", UserListViewSet, basename="users")
+router.register(r"^user", UserDetailViewSet, basename="user")
 
-app_name = 'authentication'
-urlpatterns = [
-    path('', include(router.urls)),
-    path('login/', obtain_jwt_token),
-]
+app_name = "authentication"
+urlpatterns = [path("", include(router.urls)), path("login/", obtain_jwt_token)]

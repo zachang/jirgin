@@ -5,13 +5,10 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('flight', '0004_auto_20190320_0931'),
-    ]
+    dependencies = [("flight", "0004_auto_20190320_0931")]
 
     operations = [
         migrations.AlterUniqueTogether(
-            name='flight',
-            unique_together={('departure', 'fly_from')},
-        ),
+            name="flight", unique_together={("departure", "fly_from")}
+        )
     ]

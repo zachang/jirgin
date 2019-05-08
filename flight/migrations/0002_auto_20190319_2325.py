@@ -6,19 +6,15 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('flight', '0001_initial'),
-    ]
+    dependencies = [("flight", "0001_initial")]
 
     operations = [
         migrations.AlterField(
-            model_name='flight',
-            name='arrival',
-            field=models.DateTimeField(),
+            model_name="flight", name="arrival", field=models.DateTimeField()
         ),
         migrations.AlterField(
-            model_name='flight',
-            name='departure',
+            model_name="flight",
+            name="departure",
             field=models.DateTimeField(default=datetime.date.today),
         ),
     ]

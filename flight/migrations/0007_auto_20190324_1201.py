@@ -5,14 +5,10 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('flight', '0006_auto_20190320_1152'),
-    ]
+    dependencies = [("flight", "0006_auto_20190320_1152")]
 
     operations = [
         migrations.AlterField(
-            model_name='flight',
-            name='capacity',
-            field=models.IntegerField(default=10),
-        ),
+            model_name="flight", name="capacity", field=models.IntegerField(default=10)
+        )
     ]
