@@ -1,4 +1,4 @@
-PYTHON_MANAGE = python manage.py 
+PYTHON_MANAGE := python manage.py 
 
 black:
 	black ../bookings/
