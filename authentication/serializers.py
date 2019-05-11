@@ -7,9 +7,11 @@ from .helpers import password_validate, email_validate
 class UserProfileSerializer(serializers.ModelSerializer):
     """A serializer for user profile object"""
 
+    image = serializers.CharField()
+
     class Meta:
         model = UserProfile
-        fields = ("id",)
+        fields = ("image",)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -20,9 +22,19 @@ class UserSerializer(serializers.ModelSerializer):
         if password_validate(password):
             return data
 
+    userprofile = UserProfileSerializer(read_only=True)
+
     class Meta:
         model = User
-        fields = ("id", "first_name", "last_name", "username", "password", "email")
+        fields = (
+            "id",
+            "first_name",
+            "last_name",
+            "username",
+            "password",
+            "email",
+            "userprofile",
+        )
         extra_kwargs = {
             "username": {
                 "min_length": 2,
@@ -43,6 +55,7 @@ class UserSerializer(serializers.ModelSerializer):
                 "required": True,
             },
             "email": {"required": True},
+            "password": {"write_only": True},
         }
 
     def create(self, validated_data):

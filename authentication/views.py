@@ -1,3 +1,4 @@
+from copy import deepcopy
 from django.contrib.admin.utils import lookup_field
 from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.models import User
@@ -42,6 +43,16 @@ class UserListViewSet(
 
     queryset = User.objects.all().order_by("-date_joined")
     serializer_class = UserSerializer
+
+    def list(self, request, format=None):
+        serializer = self.get_serializer(self.queryset, many=True)
+        serializer_data = deepcopy(serializer.data)
+        for data in serializer_data:
+            data["image"] = (
+                data["userprofile"]["image"] if data["userprofile"]["image"] else ""
+            )
+            del data["userprofile"]
+        return Response({"users": serializer_data}, status=HTTP_200_OK)
 
 
 class UserDetailViewSet(
@@ -101,7 +112,7 @@ class UserDetailViewSet(
     def upload_image(self, request, pk=None):
 
         user_id = decode_token(request.auth)["user_id"]
-        user = UserProfile.objects.get(pk=user_id)
+        user = UserProfile.objects.get(user_id=user_id)
         serializer = ImageSerializer(data=request.data)
 
         if serializer.is_valid():
