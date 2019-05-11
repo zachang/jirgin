@@ -70,6 +70,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.BasicAuthentication",
     ),
     "UPLOADED_FILES_USE_URL": True,
+    "TEST_REQUEST_DEFAULT_FORMAT": "json",
 }
 
 JWT_AUTH = {
