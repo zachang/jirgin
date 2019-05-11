@@ -20,3 +20,10 @@ def password_validate(password):
             + " special characters."
         }
     )
+
+
+def email_validate(email=None):
+    if email:
+        if re.match(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)", email):
+            email
+        raise serializers.ValidationError({"email": "Enter a valid email address."})
