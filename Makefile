@@ -17,3 +17,6 @@ pre-commit:
 
 runserver:
 	$(PYTHON_MANAGE) runserver
+
+test:
+	$(PYTHON_MANAGE) test
