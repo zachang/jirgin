@@ -19,4 +19,6 @@ runserver:
 	$(PYTHON_MANAGE) runserver
 
 test:
-	$(PYTHON_MANAGE) test
+	coverage run --source='.' manage.py test
+	coverage report
+	coverage html

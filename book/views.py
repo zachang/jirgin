@@ -5,7 +5,11 @@ from django.db import IntegrityError
 from rest_framework import mixins
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_409_CONFLICT, HTTP_400_BAD_REQUEST
+from rest_framework.status import (
+    HTTP_201_CREATED,
+    HTTP_409_CONFLICT,
+    HTTP_400_BAD_REQUEST,
+)
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.shortcuts import get_object_or_404
 
@@ -21,6 +25,7 @@ class BookListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     API viewset that allows users book flight
     """
 
+    queryset = Book.objects.all().order_by("-id")
     permission_classes = [IsAuthenticated]
 
     def create(self, request):
@@ -30,6 +35,13 @@ class BookListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
             try:
                 flight_id = serializer.validated_data["flight_id"]
                 flight = get_object_or_404(Flight, pk=flight_id)
+                if flight.number_booked == flight.capacity:
+                    flight.is_available = False
+                    flight.save()
+                    return Response(
+                        {"message": "Flight is fully booked"},
+                        status=HTTP_400_BAD_REQUEST,
+                    )
                 if flight and flight.is_available:
                     flight.number_booked += 1
                     serializer.save(user=self.request.user)
@@ -40,12 +52,12 @@ class BookListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
                     )
                     return Response(
                         {"status": "Success", "booked_flights": serializer.data},
-                        status=HTTP_200_OK,
+                        status=HTTP_201_CREATED,
                     )
                 return Response(
                     {
                         "status": "Failure",
-                        "message": "Flight is fully booked or not available",
+                        "message": "The flight is not available at the moment.",
                     },
                     status=HTTP_400_BAD_REQUEST,
                 )

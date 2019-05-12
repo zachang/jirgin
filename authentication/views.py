@@ -6,8 +6,13 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework import mixins
-from rest_framework.decorators import api_view
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import (
+    IsAuthenticatedOrReadOnly,
+    IsAuthenticated,
+    IsAdminUser,
+    AllowAny,
+)
 from rest_framework.response import Response
 from rest_framework.status import (
     HTTP_200_OK,
@@ -40,6 +45,16 @@ class UserListViewSet(
     """
     API viewset that allows users to create and view profile
     """
+
+    def get_permissions(self):
+        """
+        Instantiates and returns the list of permissions that this view requires.
+        """
+        if self.action == "list":
+            permission_classes = [IsAdminUser]
+        else:
+            permission_classes = [AllowAny]
+        return [permission() for permission in permission_classes]
 
     queryset = User.objects.all().order_by("-date_joined")
     serializer_class = UserSerializer

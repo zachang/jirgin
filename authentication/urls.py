@@ -5,12 +5,12 @@ from .views import UserListViewSet, UserDetailViewSet
 from .views import home
 
 router = routers.DefaultRouter()
-router.register(r"^users", UserListViewSet, basename="users")
-router.register(r"^user", UserDetailViewSet, basename="user")
+router.register(r"users", UserListViewSet)
+router.register(r"user", UserDetailViewSet)
 
 app_name = "authentication"
 urlpatterns = [
-    path("home/", home, name="home"),
     path("", include(router.urls)),
-    path("login/", obtain_jwt_token),
+    path("home/", home, name="home"),
+    path("login/", obtain_jwt_token, name="login"),
 ]

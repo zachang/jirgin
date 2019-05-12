@@ -1,14 +1,11 @@
-from django.test import TestCase
-from django.contrib.auth.models import User
+from rest_framework.test import APITestCase
 from rest_framework import status
 from rest_framework.test import APIClient
 
 from rest_framework.reverse import reverse
 
-from . import views
 
-
-class SanityTestCase(TestCase):
+class SanityTestCase(APITestCase):
     """Test the sanity of the api and that it can be accessed"""
 
     def test_welcome_view_successful(self):

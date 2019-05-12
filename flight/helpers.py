@@ -13,23 +13,23 @@ def validate_travel_dates(departure, arrival):
     if datetime.strptime(departure, date_format) < datetime.now():
         status = False
         error_message = Response(
-            {"Message": "Departure time cannot be in the past"},
+            {"message": "Departure time cannot be in the past"},
             status=HTTP_400_BAD_REQUEST,
         )
 
-    if datetime.strptime(arrival, date_format) < datetime.now():
+    elif datetime.strptime(arrival, date_format) < datetime.now():
         status = False
         error_message = Response(
-            {"Message": "Arrival time cannot be in the past"},
+            {"message": "Arrival time cannot be in the past"},
             status=HTTP_400_BAD_REQUEST,
         )
 
-    if datetime.strptime(departure, date_format) > datetime.strptime(
+    elif datetime.strptime(departure, date_format) > datetime.strptime(
         arrival, date_format
     ):
         status = False
         error_message = Response(
-            {"Message": "Departure time cannot be greater than arrival time"},
+            {"message": "Departure time cannot be greater than arrival time"},
             status=HTTP_400_BAD_REQUEST,
         )
 
