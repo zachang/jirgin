@@ -15,11 +15,6 @@ class UserProfile(models.Model):
         return "{}'s profile".format(self.user)
 
 
-@receiver(pre_delete, sender=UserProfile)
-def photo_delete(sender, instance, **kwargs):
-    destroy(instance.image.public_id)
-
-
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         profile, created = UserProfile.objects.get_or_create(user=instance)

@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
 
-
 urlpatterns = [
     path("api/v1/", include("authentication.urls", namespace="authentication")),
     path("api/v1/", include("flight.urls", namespace="flight")),

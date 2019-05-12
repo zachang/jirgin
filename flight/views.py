@@ -7,7 +7,7 @@ from django.db import connection
 from rest_framework import mixins
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED
 
 from .serializers import FlightSerializer
 from .models import Flight
@@ -58,12 +58,12 @@ class FlightListViewSet(
                 serializer.save()
                 return Response(
                     {"status": "Success", "flights": serializer.data},
-                    status=HTTP_200_OK,
+                    status=HTTP_201_CREATED,
                 )
             return error_message
 
         return Response(
-            {"status": "Success", "messages": serializer.errors},
+            {"status": "Failure", "messages": serializer.errors},
             status=HTTP_400_BAD_REQUEST,
         )
 
@@ -91,5 +91,5 @@ class FlightListViewSet(
                 result = item
             return Response({"reservations": result}, status=HTTP_200_OK)
         return Response(
-            {"message": "this departure date is invalid "}, status=HTTP_400_BAD_REQUEST
+            {"message": "this departure date is invalid"}, status=HTTP_400_BAD_REQUEST
         )

@@ -16,6 +16,7 @@ before_install:
   - export PYTHONPATH=$HOME/builds/zachang/jirgin
   - export PIP_USE_MIRRORS=true
 
+# install requirements
 install:
   - make pip-install
   - pip install django==$DJANGO --quiet
@@ -28,4 +29,9 @@ before_script:
 
 # command to run tests
 script:
+  - python manage.py collectstatic --noinput --settings=bookings.settings
   - make test
+
+# send coverage report to coveralls
+after_success:
+  coveralls

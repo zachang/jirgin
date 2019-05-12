@@ -1,0 +1,15 @@
+[run]
+branch = True
+omit =
+    */apps.py
+    manage.py
+    */wsgi.py
+    */tests.py
+    */email_reminder_cron.py
+    */helpers/*
+    */migrations/*
+    */bookings/settings.py
+    */permissions.py
+    */serializers.py
+    */admin.py
+    */tests/*
