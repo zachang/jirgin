@@ -3,6 +3,7 @@ branch = True
 omit =
     */apps.py
     manage.py
+    locustfile.py
     */wsgi.py
     */tests.py
     */email_reminder_cron.py
