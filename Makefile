@@ -3,6 +3,9 @@ PYTHON_MANAGE := python manage.py
 black:
 	black ../bookings/
 
+locust:
+	locust --host=http://127.0.0.1:8000/
+
 migrations:
 	$(PYTHON_MANAGE) makemigrations
 
