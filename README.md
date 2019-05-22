@@ -50,4 +50,4 @@ Jirgin is a flight booking API that enables users register, log in, upload profi
 - Dawuda Ebenezer Zachang
 
 ## LICENSE
-- This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/zachang/jirgin/blob/develop/LICENSE) file for details
+- This project is licensed under the MIT License - see the [LICENSE](https://github.com/zachang/jirgin/blob/develop/LICENSE) file for details
