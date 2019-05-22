@@ -29,7 +29,7 @@ Jirgin is a flight booking API that enables users register, log in, upload profi
 
 ## Running Tests
 
-- Run `make test
+- Run `make test`
 
 ## Technologies Used
 
