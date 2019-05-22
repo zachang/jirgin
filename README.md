@@ -10,7 +10,7 @@ Jirgin is a flight booking API that enables users register, log in, upload profi
 
 - Clone the repo.
 - Change into the directory $ cd /bookings
-- Create a .env file in your root directory as described in .env.sample file.
+- Create a .env file in your root directory as described in .env.example file.
 - Have at least Python 3.6.x installed.
 - Create a virtual environment using `python -m venv venv-name-you-like` command.
 - Activate virtual environment using `source venv-name-given/bin/activate`
