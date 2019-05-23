@@ -12,6 +12,5 @@ class SanityTestCase(APITestCase):
         """Test that the api navigates to the home view successful"""
         message = "Welcome to jirgin, your one stop flight booking app"
         self.client = APIClient()
-        self.response = self.client.get(reverse("authentication:home"), format="json")
+        self.response = self.client.get(reverse("index"))
         self.assertEqual(self.response.status_code, status.HTTP_200_OK)
-        self.assertEqual(self.response.data["message"], message)

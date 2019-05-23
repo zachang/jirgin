@@ -1,4 +1,5 @@
 from copy import deepcopy
+from django.shortcuts import render
 from django.contrib.admin.utils import lookup_field
 from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.models import User
@@ -34,8 +35,8 @@ from .models import UserProfile
 
 
 @api_view(["GET"])
-def home(request):
-    return Response({"message": "Welcome to jirgin, your one stop flight booking app"})
+def index(request):
+    return render(request, "authentication/index.html")
 
 
 class UserListViewSet(
