@@ -134,13 +134,19 @@ class ListCreateTestCase(APITestCase):
 
     def test_retrieve_reservations_any_valid_date_successful(self):
         """Verify all flight reservations for any existing valid date"""
-        date = {"date": self.flight_data["departure"].split(" ")[0]}
+        date = {
+            "date": self.flight.departure.split(" ")[0],
+            "flight_id": self.flight.id,
+        }
         response = self.client.get(self.reservations_url, data=date, format="json")
         self.assertEqual(response.status_code, HTTP_200_OK)
         self.assertEqual(response.data["reservations"], self.flight.number_booked)
 
     def test_retrieve_reservations_for_missing_date_unsuccessful(self):
-        """Verify that retrieval of flight reservations fails if no date is supplied"""
+        """
+        Verify that retrieval of flight reservations fails if no date and flight id
+        is supplied in the query params
+        """
         date = {}
         message = "please provide a date in the query param."
         response = self.client.get(self.reservations_url, data=date, format="json")
@@ -149,16 +155,19 @@ class ListCreateTestCase(APITestCase):
 
     def test_retrieve_reservations_for_invalid_date_format_unsuccessful(self):
         """Verify that retrieval of flight reservations fails if date format is invalid"""
-        date = {"date": "12-12-2019"}
+        date = {"date": "12-12-2019", "flight_id": self.flight.id}
         message = "Date has wrong format. Use this format YYYY-MM-DD."
         response = self.client.get(self.reservations_url, data=date, format="json")
         self.assertEqual(response.status_code, HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data["message"], message)
 
     def test_retrieve_reservations_for_invalid_date_unsuccessful(self):
-        """Verify that retrieval of flight reservations fails if date is invalid"""
-        date = {"date": "2019-12-12"}
-        message = "this departure date is invalid"
+        """
+        Verify that retrieval of flight reservations fails if date or flight id
+        supplied is invalid or do not match
+        """
+        date = {"date": "2019-12-12", "flight_id": self.flight.id}
+        message = "this departure date or flight_id is invalid or do not match"
         response = self.client.get(self.reservations_url, data=date, format="json")
         self.assertEqual(response.status_code, HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data["message"], message)
