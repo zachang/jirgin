@@ -39,6 +39,7 @@ Jirgin is a flight booking API that enables users register, log in, upload profi
 - [Cloudinary](https://cloudinary.com/) - Cloud platform used for file management like images, videos etc.
 
 ## How To Contribute
+
 - Fork this repository to your GitHub account
 - lone the forked repository
 - Create your feature branch
@@ -47,7 +48,9 @@ Jirgin is a flight booking API that enables users register, log in, upload profi
 - Open a Pull Request
 
 ## Author
+
 - Dawuda Ebenezer Zachang
 
 ## LICENSE
+
 - This project is licensed under the MIT License - see the [LICENSE](https://github.com/zachang/jirgin/blob/develop/LICENSE) file for details
