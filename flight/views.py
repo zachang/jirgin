@@ -70,6 +70,7 @@ class FlightListViewSet(
     @action(detail=False, methods=["GET"], permission_classes=[IsAdminUser])
     def reservations(self, request):
         date = request.query_params.get("date", None)
+        flight_id = request.query_params.get("flight_id", None)
         if date is None:
             return Response(
                 {"message": "please provide a date in the query param."},
@@ -83,13 +84,14 @@ class FlightListViewSet(
             )
 
         with connection.cursor() as cursor:
-            query = "SELECT number_booked FROM flight_flight WHERE Date(departure)=%s"
-            cursor.execute(query, [date])
+            query = "SELECT number_booked FROM flight_flight WHERE Date(departure)=%s AND id=%s"
+            cursor.execute(query, [date, flight_id])
             count_result = cursor.fetchall()
         if count_result:
             for item in count_result[0]:
                 result = item
             return Response({"reservations": result}, status=HTTP_200_OK)
         return Response(
-            {"message": "this departure date is invalid"}, status=HTTP_400_BAD_REQUEST
+            {"message": "this departure date or flight_id is invalid or do not match"},
+            status=HTTP_400_BAD_REQUEST,
         )
