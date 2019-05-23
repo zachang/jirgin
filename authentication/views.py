@@ -2,7 +2,6 @@ from copy import deepcopy
 from django.contrib.admin.utils import lookup_field
 from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.models import User
-from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework import mixins
@@ -60,6 +59,12 @@ class UserListViewSet(
     serializer_class = UserSerializer
 
     def list(self, request, format=None):
+        """It returns all registered users
+
+        :param request: request data
+        :param format: format of request
+        :returns: response message
+        """
         serializer = self.get_serializer(self.queryset, many=True)
         serializer_data = deepcopy(serializer.data)
         for data in serializer_data:
@@ -85,6 +90,12 @@ class UserDetailViewSet(
 
     @action(detail=False, methods=["PATCH"], permission_classes=[IsAuthenticated])
     def change_password(self, request, pk=None):
+        """It handles change password for users
+
+        :param request: request data
+        :param pk: primary key
+        :returns: response message
+        """
 
         user_id = decode_token(request.auth)["user_id"]
         user = User.objects.get(pk=user_id)
@@ -125,6 +136,12 @@ class UserDetailViewSet(
 
     @action(detail=False, methods=["PATCH"], permission_classes=[IsAuthenticated])
     def upload_image(self, request, pk=None):
+        """It handles image upload to cloudinary
+
+        :param request: request data
+        :param pk: primary key
+        :returns: response message
+        """
 
         user_id = decode_token(request.auth)["user_id"]
         user = UserProfile.objects.get(user_id=user_id)

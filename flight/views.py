@@ -2,7 +2,6 @@ import re
 
 from rest_framework import viewsets
 from rest_framework.decorators import action
-from datetime import datetime, timezone
 from django.db import connection
 from rest_framework import mixins
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -35,6 +34,12 @@ class FlightListViewSet(
     serializer_class = FlightSerializer
 
     def list(self, request):
+        """It returns all flights
+
+        :param request: request data
+        :returns: response message
+        """
+
         flights = self.get_queryset()
         serializer = self.get_serializer(flights, many=True)
         if not flights:
@@ -46,6 +51,12 @@ class FlightListViewSet(
         )
 
     def create(self, request):
+        """It creates flights
+
+        :param request: request data
+        :returns: response message
+        """
+
         serializer = self.get_serializer(data=request.data)
         date_format = "%Y-%m-%dT%H:%M:%SZ"
 
@@ -69,6 +80,11 @@ class FlightListViewSet(
 
     @action(detail=False, methods=["GET"], permission_classes=[IsAdminUser])
     def reservations(self, request):
+        """It returns a specific flight booked in a specific day
+
+        :param request: request data
+        :returns: response message
+        """
         date = request.query_params.get("date", None)
         flight_id = request.query_params.get("flight_id", None)
         if date is None:

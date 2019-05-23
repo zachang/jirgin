@@ -3,6 +3,8 @@ from bookings.settings import EMAIL_HOST_USER
 
 
 async def send_flight_reservation_email(user, flight_number, departure):
+    """Asynchronous email that sends flight reservation details"""
+
     message = EmailMessage(
         "Booking Info",
         "Thanks {} for booking this flight. Flight number is {} and departure is {}".format(

@@ -6,6 +6,12 @@ from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
 
 
 def validate_travel_dates(departure, arrival):
+    """It validates arrival and departure dates
+
+    :param departure: departure date
+    :param arrival: arrival date
+    :returns: error message or Boolean status
+    """
     date_format = "%Y-%m-%dT%H:%M:%SZ"
     status = True
     error_message = ""

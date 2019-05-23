@@ -6,6 +6,7 @@ from bookings.settings import EMAIL_HOST_USER
 
 
 def send_flight_reminder_mail():
+    """It handles email reminder for reserved flights sent using cron job"""
     date_format = "%Y-%m-%d %H:%M:%S"
     next_day = datetime.now().day + 1
     month = datetime.now().month

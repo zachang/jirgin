@@ -29,6 +29,12 @@ class BookListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     permission_classes = [IsAuthenticated]
 
     def create(self, request):
+        """It handles booking of flights
+
+        :param request: request data
+        :returns: response message
+        """
+
         serializer = BookSerializer(data=request.data)
 
         if serializer.is_valid():
