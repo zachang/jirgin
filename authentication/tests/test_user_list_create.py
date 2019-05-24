@@ -105,10 +105,8 @@ class ListCreateTestCase(APITestCase):
         """Verify that all users can be retrieved by an admin user"""
         response = self.client.get(self.url_list, format="json")
         self.assertEqual(response.status_code, HTTP_200_OK)
-        self.assertEqual(
-            response.data["users"][1]["first_name"], self.user_1.first_name
-        )
-        self.assertEqual(len(response.data["users"]), User.objects.count())
+        self.assertEqual(response.data[0]["first_name"], self.user_2.first_name)
+        self.assertEqual(len(response.data), User.objects.count())
 
     def test_retrieve_single_user_successful(self):
         """Verify retrieval of a single user"""

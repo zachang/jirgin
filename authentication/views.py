@@ -59,21 +59,15 @@ class UserListViewSet(
     queryset = User.objects.all().order_by("-date_joined")
     serializer_class = UserSerializer
 
-    def list(self, request, format=None):
-        """It returns all registered users
+    # def list(self, request, format=None):
+    #     """It returns all registered users
 
-        :param request: request data
-        :param format: format of request
-        :returns: response message
-        """
-        serializer = self.get_serializer(self.queryset, many=True)
-        serializer_data = deepcopy(serializer.data)
-        for data in serializer_data:
-            data["image"] = (
-                data["userprofile"]["image"] if data["userprofile"]["image"] else ""
-            )
-            del data["userprofile"]
-        return Response({"users": serializer_data}, status=HTTP_200_OK)
+    #     :param request: request data
+    #     :param format: format of request
+    #     :returns: response message
+    #     """
+    #     serializer = self.get_serializer(self.queryset, many=True)
+    #     return Response({"users": serializer.data}, status=HTTP_200_OK)
 
 
 class UserDetailViewSet(
