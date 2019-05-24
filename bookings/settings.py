@@ -71,6 +71,13 @@ REST_FRAMEWORK = {
     ),
     "UPLOADED_FILES_USE_URL": True,
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
+    "DEFAULT_THROTTLE_CLASSES": ("rest_framework.throttling.ScopedRateThrottle",),
+    "DEFAULT_THROTTLE_RATES": {
+        "users": "5000/day",
+        "flights": "5000/day",
+        "bookings": "5000/day",
+        "uploads": "20/day",
+    },
 }
 
 JWT_AUTH = {

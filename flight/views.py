@@ -1,5 +1,6 @@
 import re
-
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from django.db import connection
@@ -32,6 +33,7 @@ class FlightListViewSet(
 
     queryset = Flight.objects.all()
     serializer_class = FlightSerializer
+    throttle_scope = "flights"
 
     def list(self, request):
         """It returns all flights
@@ -78,6 +80,7 @@ class FlightListViewSet(
             status=HTTP_400_BAD_REQUEST,
         )
 
+    @method_decorator(cache_page(60 * 60 * 2))
     @action(detail=False, methods=["GET"], permission_classes=[IsAdminUser])
     def reservations(self, request):
         """It returns a specific flight booked in a specific day

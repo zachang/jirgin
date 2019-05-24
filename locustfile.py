@@ -2,7 +2,7 @@ import json
 from random import randint
 from locust import HttpLocust, TaskSet
 
-home_url = "http://127.0.0.1:8000/api/v1/home/"
+home_url = "http://127.0.0.1:8000/"
 signup_url = "http://127.0.0.1:8000/api/v1/users/"
 login_url = "http://127.0.0.1:8000/api/v1/login/"
 flights_url = "http://127.0.0.1:8000/api/v1/flights/"
@@ -36,46 +36,25 @@ def login(l):
 
 def flight(l):
 
-    departure = ("2019-05-27 15:00:00+01",)
-    arrival = ("2019-05-28 16:00:00+01",)
-    fly_from = "Kano{}".format(randint(1, 1000))
-    fly_to = "Abuja{}".format(randint(1, 1000))
-
     auth_response = l.client.post(
         login_url, {"username": "emmatope", "password": "Password92?"}
     )
     token = json.loads(auth_response.text)["token"]
 
-    l.client.post(
-        flights_url,
-        {
-            "departure": departure,
-            "arrival": arrival,
-            "fly_from": fly_from,
-            "fly_to": fly_to,
-            "capacity": 200,
-        },
-        headers={"Authorization": "JWT " + token},
-    )
+    l.client.get(flights_url, headers={"Authorization": "JWT " + token})
 
 
 def book(l):
-    flight_class = "FIRST"
-    flight = gen_book_flight_id()
 
     auth_response = l.client.post(
         login_url, {"username": "emmatope", "password": "Password92?"}
     )
     token = json.loads(auth_response.text)["token"]
-    l.client.post(
-        books_url,
-        {"flight_class": flight_class, "flight": 66},
-        headers={"Authorization": "JWT " + token},
-    )
+    l.client.get(books_url, headers={"Authorization": "JWT " + token})
 
 
 class UserBehavior(TaskSet):
-    tasks = {index: 1, login: 2, flight: 3, book: 4}
+    tasks = {login: 1, flight: 1, book: 3}
 
     def on_start(self):
         signup(self)

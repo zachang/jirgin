@@ -20,13 +20,17 @@ from book.helpers.background_task import BackgroundTaskWorker
 from book.helpers.flight_reservation_email import send_flight_reservation_email
 
 
-class BookListViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+class BookListViewSet(
+    mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet
+):
     """
     API viewset that allows users book flight
     """
 
     queryset = Book.objects.all().order_by("-id")
     permission_classes = [IsAuthenticated]
+    serializer_class = BookSerializer
+    throttle_scope = "bookings"
 
     def create(self, request):
         """It handles booking of flights
