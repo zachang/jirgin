@@ -47,8 +47,13 @@ Jirgin is a flight booking API that enables users register, log in, upload profi
 - Push to the remote branch
 - Open a Pull Request
 
+## API LINK
+
+- [Jirgin](https://jirgin.herokuapp.com/)
+
 ## API Documentation
-- [Jirgin](https://documenter.getpostman.com/view/7627295/S1TR3zRv?version=latest)
+
+- [Jirgin Doc](https://documenter.getpostman.com/view/7627295/S1TR3zRv?version=latest)
 
 ## Author
 
