@@ -32,6 +32,7 @@ class FlightListViewSet(
 
     queryset = Flight.objects.all()
     serializer_class = FlightSerializer
+    throttle_scope = "flights"
 
     def list(self, request):
         """It returns all flights

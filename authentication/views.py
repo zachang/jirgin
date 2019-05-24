@@ -80,6 +80,7 @@ class UserDetailViewSet(
     queryset = User.objects.all().order_by("-date_joined")
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)
     serializer_class = UserModifySerializer
+    # throttle_scope = 'users'
 
     lookup_field = "pk"
 
@@ -141,6 +142,7 @@ class UserDetailViewSet(
         user_id = decode_token(request.auth)["user_id"]
         user = UserProfile.objects.get(user_id=user_id)
         serializer = ImageSerializer(data=request.data)
+        throttle_scope = "uploads"
 
         if serializer.is_valid():
             uploaded_image = upload(request.data["image"])
