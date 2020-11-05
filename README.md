@@ -17,7 +17,7 @@ Jirgin is a flight booking API that enables users register, log in, upload profi
 - Run `make pip-install` to install dependencies.
 - Run `make pre-commit` to activate the pre-commit hook for code formatting before commits are applied
 
-## Migarations
+## Migrations
 
 - First setup database connections.
 - Run `make migrate`.
